@@ -1,37 +1,31 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
+
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                sh 'echo "Build"'
             }
         }
-        stage ('Tests') {
-            retry(2) {
-            steps {
-            
-            parallel(
-               'test_1': {
-                    sh 'mvn test'
-                },
-            
-                'test_2': {
-                    sh 'sleep 30'
-                },
+        retry(2) { stage ('Tests') {
 
-                'test_3': {
+            
+                parallel{
+                stage('Test A') {
+                        sh 'mvn test' 
+                }
+                stage('Test B') {
+                    sh 'sleep 30'
+                }
+
+                stage('Test C') {
                     sh 'sleep 30 && exit 1'
                 }
-            )}}
-        }
+                }
+         }}
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                sh 'echo "OK"'
             }
         }
     }
