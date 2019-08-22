@@ -12,6 +12,7 @@ pipeline {
             }
         }
         stage ('Tests') {
+            steps {
             parallel(
                'test_1': {
                     sh 'mvn test'
@@ -24,7 +25,7 @@ pipeline {
                 'test_3': {
                     sh 'sleep 30 && exit 1'
                 }
-            )
+            )}
         }
         stage('Deliver') {
             steps {
