@@ -12,8 +12,9 @@ pipeline {
             }
         }
         stage ('Tests') {
-            steps {
             retry(2) {
+            steps {
+            
             parallel(
                'test_1': {
                     sh 'mvn test'
