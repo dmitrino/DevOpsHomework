@@ -15,11 +15,11 @@ pipeline {
             parallel(
                'test_1': {
                     sh 'mvn test'
-                }
+                },
             
                 'test_2': {
                     sh 'sleep 30'
-                }
+                },
 
                 'test_3': {
                     sh 'sleep 30 && exit 1'
