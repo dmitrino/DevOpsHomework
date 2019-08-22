@@ -11,29 +11,20 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        parallel (
-            stage('Test1') {
-                steps {
+        stage (
+            parallel(
+               'test_1': {
                     sh 'mvn test'
                 }
-                post {
-                    always {
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }
-            }
-            stage('Test2') {
-                steps {
+            
+                'test_2': {
                     sh 'sleep (30)'
                 }
 
-            }
-            stage('Test3') {
-                steps {
+                'test_3': {
                     sh 'sleep (30) && exit 1'
                 }
-            }
-        )
+        }
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
