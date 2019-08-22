@@ -18,11 +18,11 @@ pipeline {
                 }
             
                 'test_2': {
-                    sh 'sleep (30)'
+                    sh 'sleep 30'
                 }
 
                 'test_3': {
-                    sh 'sleep (30) && exit 1'
+                    sh 'sleep 30 && exit 1'
                 }
         }
         stage('Deliver') {
